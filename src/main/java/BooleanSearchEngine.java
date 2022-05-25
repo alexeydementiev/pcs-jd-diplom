@@ -37,8 +37,6 @@ public class BooleanSearchEngine implements SearchEngine {
 		} catch (IOException exception) {
 			System.out.println(exception.getMessage());
 		}
-
-
 	}
 
 	private void indexingPdfFile(PdfDocument doc, String pdfName) {
@@ -67,7 +65,6 @@ public class BooleanSearchEngine implements SearchEngine {
 				index.put(entry.getKey(), pageEntryList);
 			}
 		}
-
 	}
 
 	@Override
@@ -85,7 +82,6 @@ public class BooleanSearchEngine implements SearchEngine {
 		}.getType();
 		Gson gson = new GsonBuilder().create();
 		String jsonString = gson.toJson(list, listType);
-
 		return jsonString;
 	}
 }
