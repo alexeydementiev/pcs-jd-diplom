@@ -10,21 +10,23 @@ import java.util.stream.Collectors;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		int port = 8099;
-		try (ServerSocket serverSocket = new ServerSocket(port);) {
-
+		int port = 8989;
+		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			System.out.println("Server is working...");
 
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
-				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
+				try (
+						PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+						BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
-				final String word = in.readLine();
-				String result = engine.listToJson(engine.search(word).stream().collect(Collectors.toList()));
-
-				out.println(result);
+					BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
+					final String word = in.readLine();
+					String result = engine.listToJson(engine.search(word).stream().collect(Collectors.toList()));
+					out.println(result);
+				} catch (IOException exception) {
+					exception.printStackTrace();
+				}
 			}
 		} catch (IOException exception) {
 			exception.printStackTrace();
